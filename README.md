@@ -18,13 +18,17 @@ auth:   # access token
 owner:  # your github username
 ```
 
-Run `yarn` and `yarn rename master main --set-default`
+Run `yarn` and `yarn rename master main --set-default --repo=<your repo name>`
+
+Or use `--all` flag to change **ALL REPOSITORIES**
 
 ## options
 ```
-yarn rename source_branch new_branch [--set-default], ignore fork repo
+yarn rename source_branch new_branch [OPTION], ignore fork repo
 
---set-default    set new_branch to default branch
+--repo=<repo name>  specify a repository
+--all               set all repositories
+--set-default       set new_branch to default branch
 ```
 
 **Be careful** if `--set-default` not set and source_branch is default branch, it just create an new_branch

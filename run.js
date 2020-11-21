@@ -5,19 +5,13 @@ const getConfig = require('./config');
  * Rename master branch to main for your owned repositories
  * @param {string} source
  * @param {string} dest
- * @param {boolean} setDefault
+ * @param {object} options
  */
-async function run(source, dest, setDefault) {
+async function run(source, dest, options) {
   try {
     const config = getConfig();
 
     const api = new GithubAPI(config.auth);
-
-    // get repositories
-    const repositories = await api.getUserRepos();
-
-    // ignore fork
-    const repos = repositories.filter((r) => r.fork === false);
 
     const action = async (repo) => {
       const branchs = await api.listOfBranchs(repo.name, config.owner);
@@ -45,7 +39,21 @@ async function run(source, dest, setDefault) {
       }
     };
 
-    repos.forEach(action);
+    if (options.setAll) {
+      // get repositories
+      const repositories = await api.getUserRepos();
+
+      // ignore fork
+      const repos = repositories.filter((r) => r.fork === false);
+
+      repos.forEach(action);
+    } else {
+      const repo = await api.getUserRepo(options.repo, config.owner);
+      if (repo.fork) {
+        throw new Error('Currently ignore fork repository');
+      }
+      await action(repo);
+    }
   } catch (error) {
     console.log(error.message);
   }

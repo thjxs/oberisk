@@ -5,9 +5,18 @@ class GithubAPI {
     this.oberisk = new Octokit({ auth });
   }
 
-  async getUser() {
-    const response = await this.oberisk.request('GET /user');
-    console.log(response);
+  /**
+   * Get a repository
+   * @param {string} repo
+   * @param {string} owner
+   */
+  async getUserRepo(repo, owner) {
+    const response = await this.oberisk.request('GET /repos/:owner/:repo', {
+      owner,
+      repo,
+    });
+
+    return response.data;
   }
 
   /**

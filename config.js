@@ -8,6 +8,6 @@ module.exports = function getConfig() {
   try {
     return safeLoad(fs.readFileSync('./oberisk.yml', 'utf-8'));
   } catch (error) {
-    throw new Error('Please run init.sh and config oberisk.yml');
+    throw new Error('Please create a config file "oberisk.yml"');
   }
 };
